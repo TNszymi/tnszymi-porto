@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="pl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szymon Korga — Creative Director & Web Developer</title>
+    <meta name="description" content="Kompleksowe usługi web designu, grafiki użytkowej oraz copywritingu sprzedażowego. Tworzę nowoczesne strony i marki pod klucz.">
+    <meta name="author" content="Szymon Korga">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 xml:lang=%22pl%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-color: #030303;
+            --card-bg: #080808;
+            --text-main: #f5f5f7;
+            --text-muted: #8e8e93;
+            --border: #1f1f23;
+            --border-hover: #3f3f46;
+            --nav-bg: rgba(3, 3, 3, 0.65);
+            --success: #10b981;
+            --error: #ef4444;
+            --canvas-line: 0, 180, 255;
+            --canvas-node: 255, 255, 255;
+        }
+
+        :root[data-theme="light"] {
+            --bg-color: #ffffff;
+            --card-bg: #f8f8fa;
+            --text-main: #09090b;
+            --text-muted: #71717a;
+            --border: #e4e4e7;
+            --border-hover: #a1a1aa;
+            --nav-bg: rgba(255, 255, 255, 0.65);
+            --success: #059669;
+            --error: #dc2626;
+            --canvas-line: 14, 116, 144;
+            --canvas-node: 15, 23, 42;
+        }
+
+        :root[data-theme="colorblind"] {
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --text-main: #ffffff;
+            --text-muted: #ffff00;
+            --border: #ffffff;
+            --border-hover: #ffff00;
+            --nav-bg: rgba(0, 0, 0, 0.75);
+            --success: #00ffff;
+            --error: #ff00ff;
+            --canvas-line: 255, 255, 0;
+            --canvas-node: 0, 255, 255;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .anim-scale {
+            opacity: 0;
+            transform: scale(0.96) translateY(20px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .anim-scale.is-visible {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .anim-stagger-item {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+        .anim-stagger-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .anim-slide-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .anim-slide-left.is-visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .anim-rotate-fade {
+            opacity: 0;
+            transform: translateY(30px) rotate(2deg);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .anim-rotate-fade.is-visible {
+            opacity: 1;
+            transform: translateY(0) rotate(0deg);
+        }
+
+        .anim-blur-in {
+            opacity: 0;
+            filter: blur(8px);
+            transform: translateY(25px);
+            transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .anim-blur-in.is-visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .anim-scale, .anim-stagger-item, .anim-slide-left, .anim-rotate-fade, .anim-blur-in {
+                opacity: 1 !important;
+                transform: none !important;
+                filter: none !important;
+            }
+        }
+
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 3.5rem;
+        }
+
+        a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+            outline: 1px solid var(--text-main);
+            outline-offset: 4px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.8rem 3.5rem;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            transition: background-color 0.4s ease, border-color 0.4s ease;
+        }
+
+        .nav-left-group {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 1001;
+        }
+
+        .social-icons {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .social-icon-link {
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+            text-decoration: none;
+        }
+
+        .social-icon-link:hover {
+            color: var(--text-main);
+            border-color: var(--border-hover);
+            transform: translateY(-2px);
+        }
+
+        .social-icon-link svg {
+            width: 13px;
+            height: 13px;
+            fill: currentColor;
+        }
+
+        .hero-socials {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 2rem;
+        }
+
+        .hero-socials .social-icon-link {
+            width: 38px;
+            height: 38px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+        .hero-socials .social-icon-link svg {
+            width: 15px;
+            height: 15px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 3rem 3rem 3rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.35rem;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: baseline;
+            white-space: nowrap;
+        }
+
+        .logo span { 
+            color: var(--text-muted); 
+            font-weight: 700;
+        }
+
+        .nav-right { display: flex; align-items: center; gap: 2rem; }
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover { color: var(--text-main); }
+
+        .nav-links .cta-btn {
+            color: var(--bg-color);
+            background: var(--text-main);
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .nav-links .cta-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: border-color 0.2s ease;
+        }
+
+        .theme-toggle:hover { border-color: var(--border-hover); }
+        .theme-toggle svg { width: 14px; height: 14px; fill: currentColor; }
+
+        [data-theme="dark"] .moon-icon, [data-theme="dark"] .eye-icon,
+        [data-theme="light"] .sun-icon, [data-theme="light"] .eye-icon,
+        [data-theme="colorblind"] .sun-icon, [data-theme="colorblind"] .moon-icon { display: none; }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            z-index: 1001;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 1.5px;
+            background: var(--text-main);
+            margin: 5px 0;
+            transition: 0.3s ease;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 3.5rem 6rem 3.5rem;
+            overflow: hidden;
+            background: var(--bg-color);
+        }
+
+        #heroCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            z-index: 1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(3, 3, 3, 0.3) 0%, rgba(3, 3, 3, 0.75) 100%);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        [data-theme="light"] .hero-overlay {
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.7) 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            pointer-events: none;
+        }
+
+        .hero-content a,
+        .hero-content button {
+            pointer-events: auto;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 5.5vw, 5rem);
+            line-height: 1.05;
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.8rem;
+            text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        [data-theme="light"] .hero h1 {
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.9rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.85rem 1.8rem;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 400;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            font-family: inherit;
+            font-size: 0.9rem;
+            text-align: center;
+            letter-spacing: -0.01em;
+        }
+
+        .btn.primary { background: var(--text-main); color: var(--bg-color); border-color: var(--text-main); }
+        .btn.primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+        .btn.secondary { background: transparent; color: var(--text-main); }
+        .btn.secondary:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+
+        section {
+            padding: 8rem 0;
+        }
+
+        section h2 {
+            font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+            letter-spacing: -0.03em;
+            margin-bottom: 3.5rem;
+            font-weight: 500;
+        }
+
+        .about-text {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            color: var(--text-muted);
+            max-width: 950px;
+            font-weight: 300;
+            line-height: 1.6;
+            letter-spacing: -0.01em;
+        }
+
+        .services { background: var(--card-bg); }
+        .services-wrapper { display: flex; flex-direction: column; gap: 1.5rem; }
+        .services-row { display: grid; gap: 1.5rem; }
+        .services-row-top { grid-template-columns: repeat(3, 1fr); }
+        .services-row-bottom { grid-template-columns: repeat(2, 1fr); max-width: 840px; margin: 0 auto; width: 100%; }
+
+        .service-card {
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            padding: 3rem 2.5rem;
+            border-radius: 6px;
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+            position: relative;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+        }
+
+        .service-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-num { font-size: 0.75rem; color: var(--text-muted); letter-spacing: 0.05em; }
+        
+        .lang-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .service-card h3 { font-size: 1.25rem; margin-bottom: 0.8rem; letter-spacing: -0.02em; font-weight: 500; }
+        .service-card p { color: var(--text-muted); font-size: 0.9rem; font-weight: 300; line-height: 1.6; }
+
+        .tech-stack { background: var(--bg-color); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .tech-grid { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+        .tech-badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-main);
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .tech-badge:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+
+        .work-header-flex, .testimonials-header-flex {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 3.5rem;
+        }
+        .work-header-flex h2, .testimonials-header-flex h2 { margin-bottom: 0; }
+
+        .carousel-arrows { display: flex; gap: 0.5rem; }
+        .carousel-arrow-btn {
+            background: var(--card-bg); border: 1px solid var(--border); color: var(--text-main);
+            width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .carousel-arrow-btn:hover { border-color: var(--border-hover); transform: scale(1.05); }
+        .carousel-arrow-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+        .work-slider-wrapper, .testimonials-slider-wrapper { width: 100%; overflow: hidden; }
+        
+        .work-slider-container, .testimonials-slider-container {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 1rem;
+            user-select: none;
+        }
+        .work-slider-container::-webkit-scrollbar, .testimonials-slider-container::-webkit-scrollbar { display: none; }
+
+        .work-card, .testimonial-card {
+            flex: 0 0 calc(33.333% - 1.35rem);
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .work-card:hover, .testimonial-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-hover);
+        }
+
+        .work-img-wrapper { 
+            width: 100%; 
+            height: 320px; 
+            background: #111; 
+            overflow: hidden; 
+            border-bottom: 1px solid var(--border); 
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .work-img { 
+            width: 100%; 
+            height: 100%; 
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+        .work-card:hover .work-img { transform: scale(1.03); }
+
+        .work-info { padding: 2rem; }
+        .work-info span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+        .work-info h3 { font-size: 1.15rem; margin: 0.4rem 0; font-weight: 500; letter-spacing: -0.01em; }
+        .work-info p { color: var(--text-muted); font-size: 0.875rem; font-weight: 300; }
+
+        .about-more { background: var(--card-bg); }
+        .about-more-content { max-width: 900px; }
+        .about-more p { font-size: 1.15rem; color: var(--text-muted); line-height: 1.7; font-weight: 300; margin-bottom: 1.5rem; letter-spacing: -0.01em; }
+
+        .testimonial-card { padding: 3rem; display: flex; flex-direction: column; justify-content: space-between; }
+        .testimonial-text { font-size: 1.1rem; color: var(--text-main); font-weight: 300; margin-bottom: 2.5rem; line-height: 1.6; letter-spacing: -0.01em; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .author-avatar {
+            width: 38px; height: 38px; border-radius: 50%; background: var(--border);
+            display: flex; align-items: center; justify-content: center; font-weight: 500; font-size: 0.8rem;
+        }
+        .author-info h4 { font-size: 0.9rem; font-weight: 500; letter-spacing: -0.01em; }
+        .author-info p { font-size: 0.75rem; color: var(--text-muted); }
+
+        .cta-banner { background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); text-align: center; }
+        .cta-banner-box { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+        .cta-banner h2 { margin-bottom: 0; }
+
+        .faq-section { background: var(--card-bg); }
+        .faq-container { max-width: 900px; margin: 0 auto; }
+        .faq-list { display: flex; flex-direction: column; gap: 1rem; }
+        .faq-item {
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            transition: border-color 0.2s ease;
+        }
+        .faq-item:hover { border-color: var(--border-hover); }
+        .faq-question {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 500;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            gap: 1rem;
+        }
+        .faq-icon {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+        .faq-item.active .faq-icon { transform: rotate(45deg); color: var(--text-main); }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), padding 0.35s ease;
+            padding: 0 2rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 250px;
+            padding-bottom: 1.5rem;
+        }
+
+        .game-section { background: var(--bg-color); }
+        .game-container { max-width: 650px; margin: 0 auto; text-align: center; }
+        .game-box {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px;
+            padding: 2.5rem; margin-top: 2rem;
+        }
+        .game-stats { display: flex; justify-content: space-around; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted); }
+        .game-history {
+            height: 140px; overflow-y: auto; border: 1px solid var(--border); border-radius: 4px;
+            padding: 1rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; text-align: left;
+            background: var(--bg-color); font-size: 0.85rem; font-weight: 300;
+        }
+        .game-msg-row.player { color: var(--text-main); }
+        .game-msg-row.bot { color: var(--text-muted); font-weight: 400; }
+        .game-msg-row.system { color: var(--success); font-style: italic; }
+        .game-msg-row.error { color: var(--error); font-style: italic; }
+
+        .game-input-group { display: flex; gap: 1rem; }
+        .game-input-group input {
+            flex: 1; padding: 0.85rem 1rem; background: var(--bg-color); border: 1px solid var(--border);
+            border-radius: 4px; color: var(--text-main); font-family: inherit; font-size: 0.9rem;
+        }
+        .game-input-group input:focus { outline: none; border-color: var(--border-hover); }
+
+        /* Styl dla sekcji kontaktowej (układ 2 kolumny) */
+        .contact-container { max-width: 1100px; margin: 0 auto; }
+        .contact-intro { text-align: center; margin-bottom: 3.5rem; }
+        .contact-intro p { color: var(--text-muted); font-size: 1.1rem; margin-top: 0.8rem; font-weight: 300; }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: stretch;
+        }
+
+        .contact-info-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-info-card h3 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .contact-detail-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .contact-detail-icon svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .contact-detail-text span {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-detail-text a, .contact-detail-text p {
+            color: var(--text-main);
+            font-size: 0.95rem;
+            text-decoration: none;
+            font-weight: 400;
+            transition: color 0.2s ease;
+        }
+
+        .contact-detail-text a:hover {
+            color: var(--text-muted);
+        }
+
+        .contact-form-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 2.5rem;
+        }
+
+        .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 0.95rem 1rem; background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 4px; color: var(--text-main); font-family: inherit; font-size: 0.9rem;
+            transition: border-color 0.2s ease;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--border-hover); }
+
+        .form-msg { display: none; padding: 1.2rem; border-radius: 4px; text-align: center; font-weight: 400; font-size: 0.9rem; }
+        .form-success-msg { background: rgba(16, 185, 129, 0.08); border: 1px solid var(--success); color: var(--success); }
+        .form-error-msg { background: rgba(239, 68, 68, 0.08); border: 1px solid var(--error); color: var(--error); }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 44px;
+            height: 44px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+        .back-to-top.visible { opacity: 1; visibility: visible; }
+        .back-to-top:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+        .back-to-top svg { width: 18px; height: 18px; fill: currentColor; }
+
+        @media (max-width: 1024px) {
+            .container { padding: 0 2rem; }
+            .navbar { padding: 1.5rem 2rem; }
+            .services-row-top { grid-template-columns: repeat(2, 1fr); }
+            .services-row-bottom { max-width: 100%; }
+            .work-card, .testimonial-card { flex: 0 0 calc(50% - 1rem); }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 1.2rem; }
+            .nav-left-group { gap: 1rem; }
+            .social-icons { display: none; }
+            .nav-links {
+                position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+                background: var(--bg-color); flex-direction: column; justify-content: center;
+                align-items: center; transition: 0.3s ease-in-out; border-left: 1px solid var(--border); gap: 2rem;
+            }
+            .nav-links.active { right: 0; }
+            .hamburger { display: block; }
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+            .services-row-top, .services-row-bottom { grid-template-columns: 1fr; }
+            .work-card, .testimonial-card { flex: 0 0 100%; }
+            .work-header-flex, .testimonials-header-flex { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="nav-left-group">
+            <a href="#" class="logo">TNszymi<span>.com</span></a>
+            <div class="social-icons">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </a>
+                <a href="https://x.com/szokorg" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="X (Twitter)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+            </div>
+        </div>
+        
+        <div class="nav-right">
+            <nav class="nav-links" id="navLinks" aria-label="Menu główne">
+                <a href="#about" class="nav-link">O mnie</a>
+                <a href="#services" class="nav-link">Usługi</a>
+                <a href="#work" class="nav-link">Portfolio</a>
+                <a href="#testimonials" class="nav-link">Opinie</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+                <a href="#game" class="nav-link">Zapętleni</a>
+                <a href="#contact" class="cta-btn nav-link">Kontakt</a>
+            </nav>
+
+            <button class="theme-toggle" id="themeToggle" aria-label="Przełącz tryb">
+                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>
+                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.3 4.9c0-.4-.4-.7-.8-.6-4.2.5-7.4 4-7.4 8.2 0 4.6 3.7 8.3 8.3 8.3 4.2 0 7.7-3.1 8.2-7.3.1-.4-.2-.8-.6-.8-3.6 0-6.7-2.6-7.7-6.1z"/></svg>
+                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z"/></svg>
+            </button>
+
+            <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="heroSection">
+            <canvas id="heroCanvas"></canvas>
+            <div class="hero-overlay"></div>
+
+            <div class="hero-content" id="heroContent">
+                <span class="badge">Designer • Grafik • Copywriter</span>
+                <h1>Projektuję, piszę i wdrażam strony, które budują silne marki.</h1>
+                <p>Łączę unikalną estetykę, słowa, które sprzedają, oraz czysty kod. Otrzymujesz kompletny produkt pod klucz.</p>
+                <div class="hero-buttons">
+                    <a href="#work" class="btn primary">Zobacz realizacje</a>
+                    <a href="#contact" class="btn secondary">Porozmawiajmy</a>
+                </div>
+                <div class="hero-socials">
+                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Facebook">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <a href="https://x.com/szokorg" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="X (Twitter)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about anim-scale">
+            <div class="container">
+                <h2>Kompleksowe podejście do Twojego biznesu</h2>
+                <p class="about-text">
+                    Większość problemów w internecie wynika z rozdrobnienia: grafik robi swoje, copywriter swoje, a deweloper próbuje to posklejać. Ja łączę te trzy światy w jedną spójną całość.
+                </p>
+            </div>
+        </section>
+
+        <section id="services" class="services">
+            <div class="container">
+                <h2 class="anim-stagger-item">Co mogę dla Ciebie zrobić?</h2>
+                <div class="services-wrapper">
+                    <div class="services-row services-row-top">
+                        <article class="service-card anim-stagger-item" style="transition-delay: 0.1s;">
+                            <div class="service-top-row">
+                                <span class="service-num">01</span>
+                            </div>
+                            <h3>Web Design & UI/UX</h3>
+                            <p>Nowoczesne i intuicyjne projekty stron, które zatrzymują użytkownika na dłużej.</p>
+                        </article>
+                        <article class="service-card anim-stagger-item" style="transition-delay: 0.2s;">
+                            <div class="service-top-row">
+                                <span class="service-num">02</span>
+                            </div>
+                            <h3>Grafika Użytkowa</h3>
+                            <p>Identyfikacja wizualna, logotypy i materiały wyróżniające Cię na tle konkurencji.</p>
+                        </article>
+                        <article class="service-card anim-stagger-item" style="transition-delay: 0.3s;">
+                            <div class="service-top-row">
+                                <span class="service-num">03</span>
+                                <span class="lang-badge">PL</span>
+                            </div>
+                            <h3>Copywriting Sprzedażowy</h3>
+                            <p>Treści, które rozwiązują problemy Twoich klientów i przekonują do zakupu.</p>
+                        </article>
+                    </div>
+                    <div class="services-row services-row-bottom">
+                        <article class="service-card anim-stagger-item" style="transition-delay: 0.4s;">
+                            <div class="service-top-row">
+                                <span class="service-num">04</span>
+                                <span class="lang-badge">PL</span>
+                            </div>
+                            <h3>Scenariusze Wideo</h3>
+                            <p>Angażujące skrypty (Rolki, TikTok, YouTube), które przykuwają uwagę i budują zasięgi.</p>
+                        </article>
+                        <article class="service-card anim-stagger-item" style="transition-delay: 0.5s;">
+                            <div class="service-top-row">
+                                <span class="service-num">05</span>
+                                <span class="lang-badge">PL</span>
+                            </div>
+                            <h3>Ghostwriting</h3>
+                            <p>Artykuły i posty eksperckie pisane w Twoim autentycznym, unikalnym stylu.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tech-stack anim-scale">
+            <div class="container" style="text-align: center;">
+                <h2 style="margin-bottom: 2rem;">Wykorzystywany Stack & Narzędzia</h2>
+                <div class="tech-grid">
+                    <div class="tech-badge">HTML5 / CSS3</div>
+                    <div class="tech-badge">JavaScript (ES6+)</div>
+                    <div class="tech-badge">HTML5 Canvas</div>
+                    <div class="tech-badge">Słownik PWN</div>
+                    <div class="tech-badge">Git & GitHub</div>
+                    <div class="tech-badge">Copywriting SEO</div>
+                    <div class="tech-badge">Adobe Photoshop</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="work" class="work work-section anim-slide-left">
+            <div class="container">
+                <div class="work-header-flex">
+                    <h2>Wybrane realizacje</h2>
+                    <div class="carousel-arrows">
+                        <button class="carousel-arrow-btn" id="prevBtn" aria-label="Poprzedni"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"/></svg></button>
+                        <button class="carousel-arrow-btn" id="nextBtn" aria-label="Następny"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container work-slider-wrapper">
+                <div class="work-slider-container" id="sliderContainer">
+                    <!-- Wygenerowane dynamicznie w JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="about-more" class="about-more anim-scale">
+            <div class="container about-more-content">
+                <h2>O Mnie!</h2>
+                <p>Wierzę, że za każdym świetnym projektem stoi pasja i ciągły rozwój. Nie działam schematycznie – nie pozwól się zablokować w nudnym kodzie agencyjnym. Zrobimy to razem indywidualnie, dla Ciebie, pod Ciebie.</p>
+                <p>Stawiam na transparentność, bliski kontakt i dbałość o każdy detal, by dostarczyć rozwiązanie napędzające sprzedaż.</p>
+            </div>
+        </section>
+
+        <section class="cta-banner anim-scale">
+            <div class="container cta-banner-box">
+                <h2>Gotowy na zmianę wizerunku swojej marki?</h2>
+                <p style="color: var(--text-muted); font-weight: 300; max-width: 600px;">Połączmy siły i stwórzmy stronę, która wyróżni Cię na tle konkurencji i zwiększy sprzedaż.</p>
+                <a href="#contact" class="btn primary">Rozpocznijmy współpracę</a>
+            </div>
+        </section>
+
+        <!-- Sekcja FAQ rozszerzona o koszty i rozliczenia -->
+        <section id="faq" class="faq-section anim-scale">
+            <div class="container faq-container">
+                <h2>Często zadawane pytania (FAQ)</h2>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Dlaczego warto wybrać kompleksową usługę (design + kod + copywriting) od jednej osoby?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Unikasz rozdrobnienia i "zrzucania winy" między agencjami. Tekst sprzedażowy idealnie pasuje do układu graficznego, a kod realizuje zamysł wizualny bez strat jakości po drodze. Oszczędzasz czas i zyskujesz spójny produkt pod klucz.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Jak wygląda proces współpracy przy nowym projekcie?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Zaczynamy od omówienia Twoich celów biznesowych i grupy docelowej. Następnie przygotowuję strukturę, teksty oraz projekt wizualny. Po Twojej akceptacji przechodzę do wdrażania czystego kodu i optymalizacji.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Czy strony są zoptymalizowane pod kątem urządzeń mobilnych i SEO?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Tak. Każdy projekt tworzę z myślą o podejściu Responsive Web Design (RWD), dzięki czemu strona wygląda i działa świetnie na każdym ekranie. Dbam także o strukturę kodu i treści przyjazne wyszukiwarkom internetowym.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Jakie technologie wykorzystujesz do budowy stron?</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Stawiam na sprawdzony, szybki stack: czysty HTML5, nowoczesny CSS oraz zaawansowany JavaScript (w tym interaktywne animacje Canvas). Żadnych zbędnych, spowalniających stronę kombajnów – tylko wydajność i lekkość kodu.
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" aria-expanded="false">
+                            <span>Zasady rozliczania i koszty usługi</span>
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Wycena każdego projektu ma charakter indywidualny i zależy od jego złożoności. Rozliczenie odbywa się zazwyczaj w systemie etapowym (zaliczka na start i płatność końcowa po wdrożeniu projektu). Wystawiam dokument sprzedaży (faktura).
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="game" class="game-section anim-blur-in">
+            <div class="container game-container">
+                <h2>Zagraj w "Zapętleni"</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1rem; font-weight: 300;">Komputer odpowie słowem zaczynającym się na ostatnią literę Twojego słowa!</p>
+                
+                <div class="game-box">
+                    <div class="game-stats">
+                        <span id="playerScore">Twoje punkty: 0</span>
+                        <span id="botScore">Punkty bota: 0</span>
+                    </div>
+                    <div class="game-history" id="gameHistory">
+                        <div class="game-msg-row system">Zaczynajmy! Wpisz dowolne słowo poniżej.</div>
+                    </div>
+                    <form id="gameForm" class="game-input-group">
+                        <input type="text" id="gameInput" autocomplete="off" placeholder="Wpisz słowo...">
+                        <button type="submit" class="btn primary">Wyślij</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact anim-blur-in">
+            <div class="container">
+                <div class="contact-container">
+                    <div class="contact-intro">
+                        <h2>Masz pomysł na projekt? Porozmawiajmy.</h2>
+                        <p>Skontaktuj się ze mną bezpośrednio lub wypełnij formularz.</p>
+                    </div>
+                    
+                    <div class="contact-grid">
+                        <!-- Lewe okno: Dane kontaktowe + Godziny odpowiedzi -->
+                        <div class="contact-info-card">
+                            <div>
+                                <h3>Informacje i kontakt</h3>
+                                <div class="contact-details">
+                                    <div class="contact-detail-item">
+                                        <div class="contact-detail-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                                        </div>
+                                        <div class="contact-detail-text">
+                                            <span>E-mail bezpośredni</span>
+                                            <a href="mailto:tnszymi@gmail.com">tnszymi@gmail.com</a>
+											<span>Możliwa też odpowiedź z innego adresu E-mail</span>
+                                        </div>
+                                    </div>
+                                    <div class="contact-detail-item">
+                                        <div class="contact-detail-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                                        </div>
+                                        <div class="contact-detail-text">
+                                            <span>Telefon / WhatsApp</span>
+                                            <a href="tel:+48572360655">+48 572 360 655</a>
+                                        </div>
+                                    </div>
+                                    <div class="contact-detail-item">
+                                        <div class="contact-detail-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                        </div>
+                                        <div class="contact-detail-text">
+                                            <span>Lokalizacja</span>
+                                            <p>Wrocław, Polska / Zdalnie</p>
+                                        </div>
+                                    </div>
+                                    <!-- Sekcja: Godziny odpowiedzi -->
+                                    <div class="contact-detail-item">
+                                        <div class="contact-detail-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                        </div>
+                                        <div class="contact-detail-text">
+                                            <span>Godziny odpowiedzi</span>
+                                            <p>Pon. – Pt.: 16:00 – 22:00 + godziny dodatkowe (również nocne) <br><span style="font-size: 0.85rem; color: var(--text-muted);">Odpowiedź w max. 24h</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-socials-wrapper">
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); display: block; margin-bottom: 0.8rem;">Social Media</span>
+                                <div class="social-icons" style="display: flex; gap: 0.6rem;">
+                                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="LinkedIn" style="width: 36px; height: 36px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                                    </a>
+                                    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Facebook" style="width: 36px; height: 36px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                                    </a>
+                                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram" style="width: 36px; height: 36px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                                    </a>
+                                    <a href="https://x.com/szokorg" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="X (Twitter)" style="width: 36px; height: 36px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prawe okno: Formularz kontaktowy -->
+                        <div class="contact-form-box">
+                            <form class="contact-form" id="contactForm" action="https://formspree.io/f/xljeoonn" method="POST">
+                                <div class="form-group">
+                                    <label for="name">Twoje Imię</label>
+                                    <input type="text" id="name" name="name" required placeholder="np. Jan Kowalski">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Twój E-mail</label>
+                                    <input type="email" id="email" name="email" required placeholder="jan@example.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="message">Wiadomość</label>
+                                    <textarea id="message" name="message" rows="5" required placeholder="Opowiedz krótko o projekcie..."></textarea>
+                                </div>
+                                <button type="submit" class="btn primary" id="submitBtn" style="width:100%; justify-content:center;">Wyślij wiadomość</button>
+                                
+                                <div class="form-msg form-success-msg" id="formSuccess">Dziękuję! Twoja wiadomość została wysłana.</div>
+                                <div class="form-msg form-error-msg" id="formError">Coś poszło nie tak. Spróbuj ponownie później.</div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button class="back-to-top" id="backToTopBtn" aria-label="Wróć do góry">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 4l-8 8h6v8h4v-8h6z"/></svg>
+    </button>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="LinkedIn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Facebook">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://x.com/szokorg" target="_blank" rel="noopener noreferrer" class="social-icon-link" aria-label="X (Twitter)">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+        </div>
+        <p>&copy; 2026 Szymon Korga TNszymi.com <span>Wszelkie prawa zastrzeżone.</span></p>
+    </footer>
+
+    <script>
+        class SimplexNoise {
+            constructor() {
+                this.p = new Uint8Array(256);
+                for (let i = 0; i < 256; i++) this.p[i] = Math.floor(Math.random() * 256);
+                this.perm = new Uint8Array(512);
+                this.permMod12 = new Uint8Array(512);
+                for (let i = 0; i < 512; i++) {
+                    this.perm[i] = this.p[i & 255];
+                    this.permMod12[i] = (this.perm[i] % 12);
+                }
+                this.grad3 = [
+                    [1,1,0], [-1,1,0], [1,-1,0], [-1,-1,0],
+                    [1,0,1], [-1,0,1], [1,0,-1], [-1,0,-1],
+                    [0,1,1], [0,-1,1], [0,1,-1], [0,-1,-1]
+                ];
+            }
+
+            noise2D(xin, yin) {
+                const F2 = 0.5 * (Math.sqrt(3.0) - 1.0);
+                const G2 = (3.0 - Math.sqrt(3.0)) / 6.0;
+                let n0 = 0, n1 = 0, n2 = 0;
+
+                const s = (xin + yin) * F2;
+                const i = Math.floor(xin + s);
+                const j = Math.floor(yin + s);
+                const t = (i + j) * G2;
+                const X0 = i - t;
+                const Y0 = j - t;
+                const x0 = xin - X0;
+                const y0 = yin - Y0;
+
+                let i1, j1;
+                if (x0 > y0) { i1 = 1; j1 = 0; }
+                else { i1 = 0; j1 = 1; }
+
+                const x1 = x0 - i1 + G2;
+                const y1 = y0 - j1 + G2;
+                const x2 = x0 - 1.0 + 2.0 * G2;
+                const y2 = y0 - 1.0 + 2.0 * G2;
+
+                const ii = i & 255;
+                const jj = j & 255;
+                const gi0 = this.permMod12[ii + this.perm[jj]];
+                const gi1 = this.permMod12[ii + i1 + this.perm[jj + j1]];
+                const gi2 = this.permMod12[ii + 1 + this.perm[jj + 1]];
+
+                let t0 = 0.5 - x0 * x0 - y0 * y0;
+                if (t0 >= 0) {
+                    t0 *= t0;
+                    n0 = t0 * t0 * (this.grad3[gi0][0] * x0 + this.grad3[gi0][1] * y0);
+                }
+
+                let t1 = 0.5 - x1 * x1 - y1 * y1;
+                if (t1 >= 0) {
+                    t1 *= t1;
+                    n1 = t1 * t1 * (this.grad3[gi1][0] * x1 + this.grad3[gi1][1] * y1);
+                }
+
+                let t2 = 0.5 - x2 * x2 - y2 * y2;
+                if (t2 >= 0) {
+                    t2 *= t2;
+                    n2 = t2 * t2 * (this.grad3[gi2][0] * x2 + this.grad3[gi2][1] * y2);
+                }
+
+                return 70.0 * (n0 + n1 + n2);
+            }
+        }
+
+        const canvas = document.getElementById('heroCanvas');
+        const ctx = canvas.getContext('2d');
+        const simplex = new SimplexNoise();
+
+        const gridConfig = {
+            gridSpacing: 45,
+            waveHeight: 40,
+            noiseScale: 0.003,
+            noiseSpeed: 0.002,
+            mouseRadius: 220,
+            mouseForce: 2.2
+        };
+
+        let gridPoints = [];
+        let gridCols = 0;
+        let gridRows = 0;
+        let gridTime = 0;
+        let dpr = window.devicePixelRatio || 1;
+        let animationFrameId = null;
+        let isCanvasVisible = true;
+        const mouseState = { x: null, y: null };
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function initHeroCanvas() {
+            if (prefersReducedMotion) return;
+            dpr = window.devicePixelRatio || 1;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            canvas.width = Math.floor(w * dpr);
+            canvas.height = Math.floor(h * dpr);
+            canvas.style.width = `${w}px`;
+            canvas.style.height = `${h}px`;
+
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.scale(dpr, dpr);
+
+            gridCols = Math.ceil(w / gridConfig.gridSpacing) + 2;
+            gridRows = Math.ceil(h / gridConfig.gridSpacing) + 2;
+
+            gridPoints = [];
+            for (let c = 0; c < gridCols; c++) {
+                for (let r = 0; r < gridRows; r++) {
+                    const ox = (c - 1) * gridConfig.gridSpacing;
+                    const oy = (r - 1) * gridConfig.gridSpacing;
+                    gridPoints.push({ originX: ox, originY: oy, x: ox, y: oy });
+                }
+            }
+        }
+
+        function updateHeroGrid() {
+            gridTime += gridConfig.noiseSpeed;
+            const len = gridPoints.length;
+
+            for (let i = 0; i < len; i++) {
+                const p = gridPoints[i];
+
+                const nx = simplex.noise2D(p.originX * gridConfig.noiseScale, p.originY * gridConfig.noiseScale + gridTime);
+                const ny = simplex.noise2D(p.originX * gridConfig.noiseScale + 50, p.originY * gridConfig.noiseScale + gridTime + 50);
+
+                let targetX = p.originX + nx * gridConfig.waveHeight;
+                let targetY = p.originY + ny * gridConfig.waveHeight;
+
+                if (mouseState.x !== null && mouseState.y !== null) {
+                    const dx = mouseState.x - p.x;
+                    const dy = mouseState.y - p.y;
+                    const dist = Math.hypot(dx, dy);
+
+                    if (dist < gridConfig.mouseRadius && dist > 0) {
+                        const factor = (1 - dist / gridConfig.mouseRadius);
+                        const force = factor * factor * gridConfig.waveHeight * gridConfig.mouseForce;
+                        targetX -= (dx / dist) * force;
+                        targetY -= (dy / dist) * force;
+                    }
+                }
+
+                p.x += (targetX - p.x) * 0.1;
+                p.y += (targetY - p.y) * 0.1;
+            }
+        }
+
+        function getCSSColor(varName, fallback) {
+            const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            return val || fallback;
+        }
+
+        function renderHeroGrid() {
+            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            ctx.lineWidth = 1.2;
+
+            const gridColor = getCSSColor('--canvas-line', '0, 180, 255');
+            const nodeColor = getCSSColor('--canvas-node', '255, 255, 255');
+
+            for (let c = 0; c < gridCols; c++) {
+                for (let r = 0; r < gridRows; r++) {
+                    const index = c * gridRows + r;
+                    const p = gridPoints[index];
+
+                    if (c < gridCols - 1) {
+                        const pRight = gridPoints[(c + 1) * gridRows + r];
+                        drawGridLine(p, pRight, gridColor);
+                    }
+                    if (r < gridRows - 1) {
+                        const pBottom = gridPoints[c * gridRows + (r + 1)];
+                        drawGridLine(p, pBottom, gridColor);
+                    }
+                }
+            }
+
+            for (let i = 0; i < gridPoints.length; i++) {
+                const p = gridPoints[i];
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 1.8, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${nodeColor}, 0.8)`;
+                ctx.fill();
+            }
+        }
+
+        function drawGridLine(p1, p2, color) {
+            const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+            const stretch = dist / gridConfig.gridSpacing;
+            let opacity = 0.3 + (stretch - 1) * 0.4;
+            opacity = Math.max(0.15, Math.min(0.85, opacity));
+
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(${color}, ${opacity})`;
+            ctx.stroke();
+        }
+
+        function loopHeroGrid() {
+            if (prefersReducedMotion || !isCanvasVisible) return;
+            updateHeroGrid();
+            renderHeroGrid();
+            animationFrameId = requestAnimationFrame(loopHeroGrid);
+        }
+
+        if (!prefersReducedMotion) {
+            const heroObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isCanvasVisible = entry.isIntersecting;
+                    if (isCanvasVisible) {
+                        if (!animationFrameId) loopHeroGrid();
+                    } else {
+                        if (animationFrameId) {
+                            cancelAnimationFrame(animationFrameId);
+                            animationFrameId = null;
+                        }
+                    }
+                });
+            }, { threshold: 0 });
+
+            heroObserver.observe(document.getElementById('heroSection'));
+            window.addEventListener('resize', initHeroCanvas);
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isCanvasVisible) return;
+                const rect = canvas.getBoundingClientRect();
+                mouseState.x = e.clientX - rect.left;
+                mouseState.y = e.clientY - rect.top;
+            });
+
+            window.addEventListener('mouseleave', () => {
+                mouseState.x = null;
+                mouseState.y = null;
+            });
+
+            initHeroCanvas();
+            loopHeroGrid();
+        }
+
+        const projectsData = [
+            {
+                url: "https://tnszymi.github.io/stylowe-meble-portfolio-szymon-korga-www.tnszymi.com/",
+                image: "https://i.imgur.com/2fxBmDz.jpeg", 
+                tag: "E-commerce",
+                title: "Sklep dla marki meblarskiej",
+                desc: "Kompleksowy projekt: projekt strony, copywriting, UX, JS, Canvas"
+            },
+            {
+                url: "https://tnszymi.github.io/klockowa-kraina-portfolio-tnszymi.com/",
+                image: "https://i.imgur.com/LvwHCwM.png",
+                tag: "E-commerce",
+                title: "Strona dla placu zabaw",
+                desc: "Kompleksowy projekt: projekt strony, copywriting, UX, JS, Canvas"
+            },
+            {
+                url: "https://tnszymi.github.io/kraina-u-miechu-portfolio-tnszymi.com/",
+                image: "https://i.imgur.com/kMmFjef.png",
+                tag: "E-commerce",
+                title: "Kraina Uśmiechu",
+                desc: "Kompleksowy projekt: projekt strony, copywriting, UX, JS, Canvas"
+            },
+            {
+                url: "https://tnszymi.github.io/klockowa-zabawa-portfolio-tnszymi.com/",
+                image: "https://i.imgur.com/CTsAU4O.png",
+                tag: "E-commerce",
+                title: "Loading Page w stylu Minecrafta",
+                desc: "Kompleksowy projekt: projekt strony, copywriting, UX, JS, Canvas"
+            },
+            {
+                url: "https://tnszymi.github.io/ballers-portfolio-tnszymi.com/",
+                image: "https://i.imgur.com/DrNXJ35.png",
+                tag: "Klub Piłkarski",
+                title: "Strona dla ...",
+                desc: "Kompleksowy projekt: projekt strony, copywriting, UX, JS, Canvas"
+            },
+            {
+                url: "https://twoja-strona.pl/projekt-6",
+                image: "https://i.imgur.com/5n8vn2L.png",
+                tag: "Autorski Portal",
+                title: "NEXTpice.com - start XX.XX.2026",
+                desc: "Kompleksowy projekt: projekt strony, copywriting, UX, JS, Canvas"
+            }
+        ];
+
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlElement = document.documentElement;
+
+        htmlElement.setAttribute('data-theme', localStorage.getItem('theme') || 'dark');
+
+        themeToggle.addEventListener('click', () => {
+            const current = htmlElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : current === 'light' ? 'colorblind' : 'dark';
+            htmlElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+        });
+
+        function renderProjects() {
+            const container = document.getElementById('sliderContainer');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            projectsData.forEach(p => {
+                const card = document.createElement('a');
+                card.href = p.url;
+                card.target = "_blank";
+                card.className = "work-card";
+                card.style.cssText = "text-decoration: none; color: inherit;";
+
+                card.innerHTML = `
+                    <div class="work-img-wrapper">
+                        <div class="work-img" style="background-image: url('${p.image}');"></div>
+                    </div>
+                    <div class="work-info">
+                        <span>${p.tag}</span>
+                        <h3>${p.title}</h3>
+                        <p>${p.desc}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            setupInfiniteCarousel('sliderContainer', 'prevBtn', 'nextBtn');
+        }
+
+        // Obsługa rozwijania FAQ
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isActive = item.classList.contains('active');
+                
+                document.querySelectorAll('.faq-item').forEach(el => {
+                    el.classList.remove('active');
+                    el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
+
+                if (!isActive) {
+                    item.classList.add('active');
+                    button.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        const botWordPool = ["dom", "kot", "pies", "okno", "stół", "lupa", "lampa", "auto", "las", "arbuz", "ananas", "telefon", "rower", "oko"];
+        let usedWords = new Set();
+        let lastLetter = null;
+        let playerScoreVal = 0;
+        let botScoreVal = 0;
+
+        const gameForm = document.getElementById('gameForm');
+        const gameInput = document.getElementById('gameInput');
+        const gameHistory = document.getElementById('gameHistory');
+        const playerScoreEl = document.getElementById('playerScore');
+        const botScoreEl = document.getElementById('botScore');
+
+        gameForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const word = gameInput.value.trim().toLowerCase();
+            if (!word) return;
+
+            if (usedWords.has(word)) {
+                appendMsg("⚠️ To słowo już było!", 'error');
+                gameInput.value = '';
+                return;
+            }
+
+            if (lastLetter && word[0] !== lastLetter) {
+                appendMsg(`⚠️ Musi zaczynać się na literę "${lastLetter.toUpperCase()}"! Przegrywasz rundę.`, 'error');
+                botScoreVal++;
+                botScoreEl.textContent = `Punkty bota: ${botScoreVal}`;
+                lastLetter = null;
+                usedWords.clear();
+                gameInput.value = '';
+                appendMsg("🔄 Zresetowano grę. Podaj nowe słowo:", 'system');
+                return;
+            }
+
+            usedWords.add(word);
+            appendMsg(`Ty: ${word}`, 'player');
+            playerScoreVal++;
+            playerScoreEl.textContent = `Twoje punkty: ${playerScoreVal}`;
+            gameInput.value = '';
+
+            const target = word[word.length - 1];
+            let possible = botWordPool.filter(w => w[0] === target && !usedWords.has(w));
+
+            setTimeout(() => {
+                let botWord = possible.length > 0 
+                    ? possible[Math.floor(Math.random() * possible.length)] 
+                    : target + 'ak';
+                
+                usedWords.add(botWord);
+                lastLetter = botWord[botWord.length - 1];
+                botScoreVal++;
+                botScoreEl.textContent = `Punkty bota: ${botScoreVal}`;
+                const nextHint = `Twoja kolej na: "${lastLetter.toUpperCase()}"`;
+                appendMsg(`Komputer: ${botWord} (${nextHint})`, 'bot');
+            }, 300);
+        });
+
+        function appendMsg(text, type) {
+            const row = document.createElement('div');
+            row.className = `game-msg-row ${type}`;
+            row.textContent = text;
+            gameHistory.appendChild(row);
+            gameHistory.scrollTop = gameHistory.scrollHeight;
+        }
+
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            const isActive = hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            hamburger.setAttribute('aria-expanded', isActive);
+        });
+        document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            hamburger.setAttribute('aria-expanded', 'false');
+        }));
+
+        const backToTopBtn = document.getElementById('backToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('visible');
+            } else {
+                backToTopBtn.classList.remove('visible');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function setupInfiniteCarousel(containerId, prevBtnId, nextBtnId) {
+            const container = document.getElementById(containerId);
+            const prevBtn = document.getElementById(prevBtnId);
+            const nextBtn = document.getElementById(nextBtnId);
+            
+            if (!container || !prevBtn || !nextBtn) return;
+
+            const originalCards = Array.from(container.children);
+            originalCards.forEach(card => {
+                const clone = card.cloneNode(true);
+                container.appendChild(clone);
+            });
+
+            function getStepWidth() {
+                const card = container.firstElementChild;
+                if (!card) return 320;
+                const style = window.getComputedStyle(container);
+                const gap = parseFloat(style.gap) || 32;
+                return card.offsetWidth + gap;
+            }
+
+            function moveNext() {
+                const step = getStepWidth();
+                const halfWidth = container.scrollWidth / 2;
+
+                if (container.scrollLeft >= halfWidth - 10) {
+                    container.scrollTo({ left: 0, behavior: 'instant' });
+                }
+
+                container.scrollBy({ left: step, behavior: 'smooth' });
+            }
+
+            function movePrev() {
+                const step = getStepWidth();
+                const halfWidth = container.scrollWidth / 2;
+
+                if (container.scrollLeft <= 10) {
+                    container.scrollTo({ left: halfWidth, behavior: 'instant' });
+                }
+
+                container.scrollBy({ left: -step, behavior: 'smooth' });
+            }
+
+            let autoInterval = setInterval(moveNext, 3000);
+
+            function restartTimer() {
+                clearInterval(autoInterval);
+                autoInterval = setInterval(moveNext, 3000);
+            }
+
+            nextBtn.addEventListener('click', () => {
+                moveNext();
+                restartTimer();
+            });
+
+            prevBtn.addEventListener('click', () => {
+                movePrev();
+                restartTimer();
+            });
+
+            container.addEventListener('mouseenter', () => clearInterval(autoInterval));
+            container.addEventListener('mouseleave', restartTimer);
+
+            container.addEventListener('touchstart', () => clearInterval(autoInterval), { passive: true });
+            container.addEventListener('touchend', restartTimer, { passive: true });
+        }
+
+        setupInfiniteCarousel('testimonialsSliderContainer', 'testimonialsPrevBtn', 'testimonialsNextBtn');
+        renderProjects();
+
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { 
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible'); 
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.anim-scale, .anim-stagger-item, .anim-slide-left, .anim-rotate-fade, .anim-blur-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formSuccess = document.getElementById('formSuccess');
+        const formError = document.getElementById('formError');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            formSuccess.style.display = 'none';
+            formError.style.display = 'none';
+            submitBtn.textContent = "Wysyłanie...";
+            submitBtn.disabled = true;
+
+            try {
+                const formData = new FormData(contactForm);
+
+                const res = await fetch(contactForm.action, { 
+                    method: 'POST', 
+                    body: formData, 
+                    headers: { 
+                        'Accept': 'application/json' 
+                    } 
+                });
+                
+                if (res.ok) {
+                    contactForm.reset();
+                    submitBtn.style.display = 'none';
+                    formSuccess.style.display = 'block';
+
+                    setTimeout(() => {
+                        formSuccess.style.display = 'none';
+                        submitBtn.textContent = "Wyślij wiadomość";
+                        submitBtn.disabled = false;
+                        submitBtn.style.display = 'flex';
+                    }, 5000);
+                } else {
+                    throw new Error();
+                }
+            } catch {
+                submitBtn.textContent = "Wyślij wiadomość";
+                submitBtn.disabled = false;
+                submitBtn.style.display = 'flex';
+                formError.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
